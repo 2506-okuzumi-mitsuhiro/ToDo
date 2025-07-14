@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @Entity
 @Getter
 @Setter
-public class Task {
+public class Tasks {
     @Id
     @Column
     private int id;

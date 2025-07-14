@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.sql.Timestamp;
 @Getter
 @Setter
-public class TaskForm {
+public class TasksForm {
     private int id;
     private String content;
     private short status;
