@@ -1,10 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Top</title>
 </head>
 <body>
+    <div class="header-contents">
+        <h1>ToDo</h1>
+    </div>
+    <div class="main-contents">
+        <div class="errorMessages" th:each="errorMessage : ${errorMessages}">
+            <span th:text="${errorMessage}"></span>
+        </div>
 
+        <div class="today">
+            本日の日付 : <span></span>
+        </div>
+
+        <a href="/new">
+            <button class="new-button" type="button">新規タスク</button>
+        </a>
+
+        <div class="conditions">
+            <form method="get">
+                期限<input type="date" name="searchStart" th:value="${searchStart}"> ～ <input type="date" name="searchEnd" th:value="${searchEnd}">
+                ステータス
+                <select name="searchStatus">
+                    <option value="" th:selected="${searchStatus == null}"></option>
+                    <option value="1" th:selected="${searchStatus == 1}">未着手</option>
+                    <option value="2" th:selected="${searchStatus == 2}">実行中</option>
+                    <option value="3" th:selected="${searchStatus == 3}">ステイ中</option>
+                    <option value="4" th:selected="${searchStatus == 4}">完了</option>
+                </select>
+                タスク内容<textarea name="content" th:text="${searchContent}"></textarea>
+                <input type="submit" value="絞込"/>
+            </form>
+        </div>
+
+        <div class="tasks">
+            <div class="Columns">
+                <div class="contentColumn">タスク内容</div>
+                <div class="statusColumn">ステータス</div>
+                <div class="limitColumn">タスク期限</div>
+            </div>
+
+            <div class="tasks-icon" th:each="task : ${tasks}">
+                <div class="content">
+                    <span th:text="${task.content}"></span>
+                </div>
+
+                <div class="status">
+                    <form th:action="@{/updateStatus/{id}(id=${task.id})}" th:method="put">
+                        <select name="status">
+                            <option value="1" th:selected="${task.status == 1}">未着手</option>
+                            <option value="2" th:selected="${task.status == 2}">実行中</option>
+                            <option value="3" th:selected="${task.status == 3}">ステイ中</option>
+                            <option value="4" th:selected="${task.status == 4}">完了</option>
+                        </select>
+                        <input type="submit" value="変更"/>
+                    </form>
+                </div>
+
+                <div class="limit">
+                    <span th:text="${task.limit}"></span>
+                </div>
+
+                <div class="edit-button">
+                    <form th:action="@{/edit/{id}(id=${task.id})}" >
+                        <input type="submit" value="編集"/>
+                    </form>
+                </div>
+
+                <div class="delete-button">
+                    <form th:action="@{/delete/{id}(id=${task.id})}" th:method="delete">
+                        <input type="submit" value="削除"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
