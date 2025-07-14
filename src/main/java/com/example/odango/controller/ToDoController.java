@@ -1,62 +1,38 @@
 package com.example.odango.controller;
 
-import com.example.odango.controller.form.TaskForm;
+import com.example.odango.controller.form.TasksForm;
 import com.example.odango.service.TaskService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.Timestamp;
+import java.util.List;
+
+@Controller
 public class ToDoController {
     @Autowired
     TaskService taskService;
 
-    @Autowired
-    HttpSession session;
-
-    /* 2-1.タスク追加画面初期表示(newページへの移動) */
-    @GetMapping("/new")
-    public ModelAndView newTask() {
+    @GetMapping("/ToDo")
+    public ModelAndView top(@RequestParam(value="start",required=false) Timestamp start,
+                            @RequestParam(value="end",required=false)Timestamp end){
         ModelAndView mav = new ModelAndView();
-        // form用の空のentityを準備
-        TaskForm taskForm = new TaskForm();
-        mav.setViewName("/new");
-        // 準備した空のFormを保管
-        mav.addObject("formModel", taskForm);
-        // バリデーションメッセージ
-        setErrorMessage(mav);
+        List<TasksForm> taskData = taskService.findAll();
+        mav.setViewName("/top");
+        mav.addObject("tasks",taskData);
+        mav.addObject("searchStart", start);
+        mav.addObject("searchEnd", end);
         return mav;
     }
-
-    /* 2-2.タスク追加機能 */
-    @PostMapping("/add")
-    public ModelAndView addTask(@Validated @ModelAttribute("formModel") TaskForm taskForm, BindingResult result) {
-        // バリデーション
-        if (result.hasErrors()) {
-            for(FieldError error : result.getFieldErrors()) {
-                String field = error.getField();
-                String message = error.getDefaultMessage();
-            }
-            return new ModelAndView("redirect:/new");
-        }
-
-        // タスクをテーブルに格納
-//        taskService.saveTask(taskForm);
-        // TOP画面へへリダイレクト
-        return new ModelAndView("redirect:/");
-    }
-
-    /* バリデーションメッセージ設定 */
-    private void setErrorMessage(ModelAndView mav) {
-        if (session.getAttribute("errorMessages") != null) {
-            mav.addObject("errorMessages", session.getAttribute("errorMessages"));
-            // sessionの破棄
-            session.invalidate();
-        }
+    /*削除処理*/
+    @DeleteMapping("/ToDo/delete/{id}")
+    public ModelAndView deleteTask(@PathVariable Integer id) {
+        taskService.deleteTask(id);
+        return new ModelAndView("redirect:/ToDo");
     }
 }
