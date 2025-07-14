@@ -5,11 +5,13 @@ import com.example.odango.repository.TaskRepository;
 import com.example.odango.repository.entity.Tasks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class TaskService {
     @Autowired
     TaskRepository taskRepository;
@@ -32,5 +34,10 @@ public class TaskService {
             tasks.add(task);
         }
         return tasks;
+    }
+
+    /*削除処理*/
+    public void deleteTask(Integer id){
+        taskRepository.deleteById(id);
     }
 }
