@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.ParseException;
 import java.util.List;
 
 @Controller
@@ -22,7 +23,7 @@ public class ToDoController {
     public ModelAndView top(@RequestParam(value="searchStart",required=false) String start,
                             @RequestParam(value="searchEnd",required=false) String end,
                             @RequestParam(value = "searchContent",required = false) String content,
-                            @RequestParam(value = "searchStatus",required = false) short status){
+                            @RequestParam(value = "searchStatus",required = false) short status) throws ParseException {
         ModelAndView mav = new ModelAndView();
         List<TasksForm> taskData = null;
 
