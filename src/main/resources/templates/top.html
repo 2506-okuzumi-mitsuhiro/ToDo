@@ -17,16 +17,16 @@
         本日の日付 : <span></span>
     </div>
 
-        <a href="/ToDo/new">
-            <button class="new-button" type="button">新規タスク</button>
-        </a>
+    <a href="/ToDo/new">
+        <button class="new-button" type="button">新規タスク</button>
+    </a>
 
     <div class="conditions">
         <form method="get">
             期限<input type="date" name="searchStart" th:value="${searchStart}"> ～ <input type="date" name="searchEnd" th:value="${searchEnd}">
             ステータス
             <select name="searchStatus">
-                <option value="0" th:selected="${searchStatus == 0}"></option>
+                <option value="" th:selected="${searchStatus == null}"></option>
                 <option value="1" th:selected="${searchStatus == 1}">未着手</option>
                 <option value="2" th:selected="${searchStatus == 2}">実行中</option>
                 <option value="3" th:selected="${searchStatus == 3}">ステイ中</option>
@@ -50,13 +50,17 @@
             </div>
 
             <div class="status">
-                <form th:action="@{/updateStatus/{id}(id=${task.id})}" th:method="put">
+                <form th:action="@{/ToDo/updateStatus/{id}(id=${task.id})}" th:method="put">
                     <select name="status">
                         <option value="1" th:selected="${task.status == 1}">未着手</option>
                         <option value="2" th:selected="${task.status == 2}">実行中</option>
                         <option value="3" th:selected="${task.status == 3}">ステイ中</option>
                         <option value="4" th:selected="${task.status == 4}">完了</option>
                     </select>
+                    <input type="hidden" name="content" th:value="${task.content}">
+                    <input type="hidden" name="limitDate" th:value="${task.limitDate}">
+                    <input type="hidden" name="createdDate" th:value="${task.createdDate}">
+                    <input type="hidden" name="updatedDate" th:value="${task.updatedDate}">
                     <input type="submit" value="変更"/>
                 </form>
             </div>
