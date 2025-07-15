@@ -75,7 +75,17 @@ public class TaskService {
     /*ステータスのみ更新*/
     public void updateStatus(TasksForm tasksForm){
         tasksForm.setUpdatedDate(new Timestamp(System.currentTimeMillis()));
-        Tasks tasks = setTaskEntity(tasksForm);
+        Tasks tasks = setTask(tasksForm);
         taskRepository.save(tasks);
+    }
+    private Tasks setTask(TasksForm reqTask) {
+        Tasks task = new Tasks();
+        task.setId(reqTask.getId());
+        task.setContent(reqTask.getContent());
+        task.setStatus(reqTask.getStatus());
+        task.setLimitDate(reqTask.getLimitDate());
+        task.setCreatedDate(reqTask.getCreatedDate());
+        task.setUpdatedDate(reqTask.getUpdatedDate());
+        return task;
     }
 }
