@@ -1,8 +1,12 @@
 package com.example.odango.repository.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
+
+import jakarta.persistence.*;
 
 
 import java.sql.Timestamp;
