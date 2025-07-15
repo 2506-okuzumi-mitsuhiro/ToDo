@@ -2,6 +2,7 @@ package com.example.odango.controller;
 
 import com.example.odango.controller.form.TasksForm;
 import com.example.odango.service.TaskService;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -27,12 +28,12 @@ public class ToDoController {
     public ModelAndView top(@RequestParam(value="searchStart",required=false) String start,
                             @RequestParam(value="searchEnd",required=false) String end,
                             @RequestParam(value = "searchContent",required = false) String content,
-                            @RequestParam(value = "searchStatus",required = false) short status) throws ParseException{
+                            @RequestParam(value = "searchStatus",required = false) Short status) throws ParseException{
         ModelAndView mav = new ModelAndView();
         List<TasksForm> taskData = null;
 
         // タスク絞り込み処理
-        if (start.isBlank() && end.isBlank() && content.isBlank() && status == 0){
+        if (StringUtils.isBlank(start) && StringUtils.isBlank(end) && StringUtils.isBlank(content) && status == null){
             // 全件取得
             taskData = taskService.findAll();
         }else {
@@ -40,16 +41,16 @@ public class ToDoController {
             taskData = taskService.findNarrowDownTask(start, end, content, status);
 
             // 各条件を再表示させる為にmavに渡す
-            if(!start.isBlank()) {
+            if(!StringUtils.isBlank(start)) {
                 mav.addObject("searchStart", start);
             }
-            if(!end.isBlank()) {
+            if(!StringUtils.isBlank(end)) {
                 mav.addObject("searchEnd", end);
             }
-            if(!content.isBlank()){
+            if(!StringUtils.isBlank(content)){
                 mav.addObject("searchContent", content);
             }
-            if (status != 0){
+            if (status != null){
                 mav.addObject("searchStatus", status);
             }
         }

@@ -3,6 +3,7 @@ package com.example.odango.service;
 import com.example.odango.controller.form.TasksForm;
 import com.example.odango.repository.TaskRepository;
 import com.example.odango.repository.entity.Tasks;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,7 @@ public class TaskService {
 
     /*全件取得処理*/
     public List<TasksForm> findAll(){
-        List<Tasks> results = taskRepository.findAll();
+        List<Tasks> results = taskRepository.findAllByOrderByLimitDateAsc();
         List<TasksForm> tasks = setTaskForm(results);
         return tasks;
     }
@@ -37,7 +38,7 @@ public class TaskService {
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        if (start.isBlank()){
+        if (StringUtils.isBlank(start)){
             dateStart = format.parse("2020-01-01 00:00:00");
         }else {
             dateStart = format.parse(start + " 00:00:00");
@@ -45,7 +46,7 @@ public class TaskService {
 
         startDate = new Timestamp(dateStart.getTime());
 
-        if (end.isBlank()){
+        if (StringUtils.isBlank(end)){
             dateEnd = format.parse("2100-12-31 23:59:59");
         }else {
             dateEnd = format.parse(end + " 23:59:59");
@@ -55,14 +56,14 @@ public class TaskService {
 
         List<Tasks> results = null;
 
-        if (!content.isBlank() && status != 0) {
-            results = taskRepository.findByLimitDateBetweenAndContentAndStatus(startDate, endDate, content, status);
-        } else if (!content.isBlank()) {
-            results = taskRepository.findByLimitDateBetweenAndStatus(startDate, endDate, content);
-        } else if (status != 0) {
-            results = taskRepository.findByLimitDateBetweenAndContent(startDate, endDate, status);
+        if (!StringUtils.isBlank(content) && status != null) {
+            results = taskRepository.findByLimitDateBetweenAndContentAndStatusOrderByLimitDateAsc(startDate, endDate, content, status);
+        } else if (!StringUtils.isBlank(content)) {
+            results = taskRepository.findByLimitDateBetweenAndContentOrderByLimitDateAsc(startDate, endDate, content);
+        } else if (status != null) {
+            results = taskRepository.findByLimitDateBetweenAndStatusOrderByLimitDateAsc(startDate, endDate, status);
         } else {
-            results = taskRepository.findByLimitDateBetween(startDate, endDate);
+            results = taskRepository.findByLimitDateBetweenOrderByLimitDateAsc(startDate, endDate);
         }
 
         List<TasksForm> tasks = setTaskForm(results);
