@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class TaskService {
     TaskRepository taskRepository;
 
     public List<TasksForm> findAll(){
-        List<Tasks> results = taskRepository.findAll();
+        List<Tasks> results = taskRepository.findAllByOrderByLimitDateAsc();
         List<TasksForm> tasks = setTaskForm(results);
         return tasks;
     }
@@ -39,5 +40,22 @@ public class TaskService {
     /*削除処理*/
     public void deleteTask(Integer id){
         taskRepository.deleteById(id);
+    }
+
+    /*ステータスのみ更新*/
+    public void updateStatus(TasksForm tasksForm){
+        tasksForm.setUpdatedDate(new Timestamp(System.currentTimeMillis()));
+        Tasks tasks = setTask(tasksForm);
+        taskRepository.save(tasks);
+    }
+    private Tasks setTask(TasksForm tasksForm){
+        Tasks tasks =new Tasks();
+        tasks.setId(tasksForm.getId());
+        tasks.setContent(tasksForm.getContent());
+        tasks.setStatus(tasksForm.getStatus());
+        tasks.setLimitDate(tasksForm.getLimitDate());
+        tasks.setCreatedDate(tasksForm.getCreatedDate());
+        tasks.setUpdatedDate(tasksForm.getUpdatedDate());
+        return tasks;
     }
 }

@@ -4,10 +4,7 @@ import com.example.odango.controller.form.TasksForm;
 import com.example.odango.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Timestamp;
@@ -34,5 +31,14 @@ public class ToDoController {
     public ModelAndView deleteTask(@PathVariable Integer id) {
         taskService.deleteTask(id);
         return new ModelAndView("redirect:/ToDo");
+    }
+
+    @PutMapping("/ToDo/updateStatus/{id}")
+    public ModelAndView updateStatus(@PathVariable Integer id,
+                                     @ModelAttribute("tasks") TasksForm task){
+        ModelAndView mav = new ModelAndView();
+        taskService.updateStatus(task);
+        mav.setViewName("redirect:/ToDo");
+        return mav;
     }
 }
