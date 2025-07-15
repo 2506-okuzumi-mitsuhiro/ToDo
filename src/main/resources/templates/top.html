@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="styleSheet">
     <title>Top</title>
 </head>
 <body>
@@ -39,9 +40,9 @@
 
         <div class="tasks">
             <div class="Columns">
-                <div class="contentColumn">タスク内容</div>
-                <div class="statusColumn">ステータス</div>
-                <div class="limitColumn">タスク期限</div>
+                <div class="content">タスク内容</div>
+                <div class="status">ステータス</div>
+                <div class="limit">タスク期限</div>
             </div>
 
             <div class="tasks-icon" th:each="task : ${tasks}">

@@ -1,0 +1,73 @@
+body {
+	background-color: #E0FFFF;
+}
+
+.header-contents {
+	margin-left: 20px;
+}
+
+.main-contents {
+	margin: 20px;
+	padding: 10px 10px 5px 10px;
+	background-color: #B4CCCC;
+	height: 100%;
+	width: 80%;
+}
+
+.footer-contents {
+	margin-left: 20px;
+}
+
+.content-box {
+    margin: 5px 0px;
+	width: 780px;
+	height: 56px;
+}
+
+button {
+	margin-bottom: 5px;
+}
+
+.tasks{
+    background-color: white;
+}
+
+.content{
+    width:30%;
+    display:inline-block;
+    margin-top:5px;
+    margin-bottom:5px;
+}
+.status{
+    width:20%;
+    display:inline-block;
+    margin-top:5px;
+    margin-bottom:5px;
+}
+.limit{
+    width:30%;
+    display:inline-block;
+    margin-top:5px;
+    margin-bottom:5px;
+}
+.delete-button{
+    display:inline-block;
+    width:5%;
+    margin-top:5px;
+    margin-bottom:5px;
+    margin-right:5px;
+    margin-left:5px;
+}
+
+.edit-button{
+    display:inline-block;
+    width:5%;
+    margin-top:5px;
+    margin-bottom:5px;
+    margin-right:10px;
+    margin-left:5px;
+}
+.Columns{
+    font-size:20px;
+    font-weight:bold;
+}
