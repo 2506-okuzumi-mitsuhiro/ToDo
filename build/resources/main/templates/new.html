@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>ToDoリスト追加</title>
+    <title>タスク追加</title>
 </head>
 <body>
+<div class="header-contents">
+    <h2>タスク追加</h2>
+</div>
 
+<div class="main-contents">
+    <div class="errorMessages" th:each="errorMessage : ${errorMessages}">
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+    <form method="post" action="/ToDo/add" th:object="${formModel}">
+        <div class="form-area">
+            <label>タスク内容</label>
+            <textarea class="content-box" th:field="*{content}" size="20" maxlength="200"/></textarea><br/>
+
+            <label>タスク期限</label>
+            <input type="date" th:field="*{strLimitDate}"/>
+            <input type="submit" value="追加"/>
+        </div>
+    </form>
+</div>
+
+<div class="footer-contents">
+    <form action="/ToDo">
+        <input type="submit" value="戻る"/>
+    </form>
+</div>
 </body>
 </html>

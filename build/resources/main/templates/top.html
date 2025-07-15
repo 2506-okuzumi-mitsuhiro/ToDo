@@ -17,7 +17,7 @@
             本日の日付 : <span></span>
         </div>
 
-        <a href="/new">
+        <a href="/ToDo/new">
             <button class="new-button" type="button">新規タスク</button>
         </a>
 
@@ -62,7 +62,7 @@
                 </div>
 
                 <div class="limit">
-                    <span th:text="${task.limit}"></span>
+                    <span th:text="${task.limitDate}"></span>
                 </div>
 
                 <div class="edit-button">
@@ -72,7 +72,7 @@
                 </div>
 
                 <div class="delete-button">
-                    <form th:action="@{/delete/{id}(id=${task.id})}" th:method="delete">
+                    <form th:action="@{/ToDo/delete/{id}(id=${task.id})}" th:method="delete">
                         <input type="submit" value="削除"/>
                     </form>
                 </div>
