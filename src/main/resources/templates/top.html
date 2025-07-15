@@ -17,9 +17,9 @@
         本日の日付 : <span></span>
     </div>
 
-    <a href="/new">
-        <button class="new-button" type="button">新規タスク</button>
-    </a>
+        <a href="/ToDo/new">
+            <button class="new-button" type="button">新規タスク</button>
+        </a>
 
     <div class="conditions">
         <form method="get">
@@ -61,9 +61,9 @@
                 </form>
             </div>
 
-            <div class="limit">
-                <span th:text="${task.limitDate}"></span>
-            </div>
+                <div class="limit">
+                    <span th:text="${task.limitDate}"></span>
+                </div>
 
             <div class="edit-button">
                 <form th:action="@{/edit/{id}(id=${task.id})}" >
@@ -71,13 +71,13 @@
                 </form>
             </div>
 
-            <div class="delete-button">
-                <form th:action="@{/ToDo/delete/{id}(id=${task.id})}" th:method="delete">
-                    <input type="submit" value="削除"/>
-                </form>
+                <div class="delete-button">
+                    <form th:action="@{/ToDo/delete/{id}(id=${task.id})}" th:method="delete">
+                        <input type="submit" value="削除"/>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </body>
 </html>

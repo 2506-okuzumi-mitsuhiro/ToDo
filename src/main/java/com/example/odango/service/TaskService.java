@@ -20,13 +20,18 @@ public class TaskService {
     @Autowired
     TaskRepository taskRepository;
 
+<<<<<<< HEAD
     /*全件取得処理*/
     public List<TasksForm> findAll(){
+=======
+    public List<TasksForm> findAll() {
+>>>>>>> b5596057f9807704bf3a6b5b3ab63b6c250be5d9
         List<Tasks> results = taskRepository.findAll();
         List<TasksForm> tasks = setTaskForm(results);
         return tasks;
     }
 
+<<<<<<< HEAD
     /*条件対象取得処理*/
     public List<TasksForm> findNarrowDownTask(String start, String end,
                                               String content, Short status) throws ParseException {
@@ -73,6 +78,11 @@ public class TaskService {
     private List<TasksForm> setTaskForm(List<Tasks> results){
         List<TasksForm> tasks = new ArrayList<>();
         for(Tasks result : results){
+=======
+    private List<TasksForm> setTaskForm(List<Tasks> results) {
+        List<TasksForm> tasks = new ArrayList<>();
+        for (Tasks result : results) {
+>>>>>>> b5596057f9807704bf3a6b5b3ab63b6c250be5d9
             TasksForm task = new TasksForm();
             task.setId(result.getId());
             task.setContent(result.getContent());
@@ -85,8 +95,39 @@ public class TaskService {
         return tasks;
     }
 
+<<<<<<< HEAD
     /*削除処理*/
     public void deleteTask(Integer id){
+=======
+    /* レコード追加・更新 */
+    public void saveTask(TasksForm reqTask) {
+        Tasks saveTask = setTaskEntity(reqTask);
+        taskRepository.save(saveTask);
+    }
+
+    private Tasks setTaskEntity(TasksForm reqTask) {
+        Tasks task = new Tasks();
+        task.setId(reqTask.getId());
+        task.setContent(reqTask.getContent());
+        task.setStatus(reqTask.getStatus());
+        task.setCreatedDate(reqTask.getCreatedDate());
+        task.setUpdatedDate(reqTask.getUpdatedDate());
+
+        // strLimitDate(String) → limitDate(TimeStamp)
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String str = reqTask.getStrLimitDate();
+            Date date = sdf.parse(str);
+            task.setLimitDate(new Timestamp(date.getTime()));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return task;
+    }
+
+    /*削除処理*/
+    public void deleteTask(Integer id) {
+>>>>>>> b5596057f9807704bf3a6b5b3ab63b6c250be5d9
         taskRepository.deleteById(id);
     }
 }
