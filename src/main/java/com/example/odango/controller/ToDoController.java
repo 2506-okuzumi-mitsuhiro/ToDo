@@ -2,6 +2,7 @@ package com.example.odango.controller;
 
 import com.example.odango.controller.form.TasksForm;
 import com.example.odango.service.TaskService;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -9,7 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.List;
 
 @Controller
@@ -18,17 +19,41 @@ public class ToDoController {
     TaskService taskService;
 
     @GetMapping("/ToDo")
-    public ModelAndView top(@RequestParam(value = "start", required = false) Timestamp start,
-                            @RequestParam(value = "end", required = false) Timestamp end) {
+    public ModelAndView top(@RequestParam(value="searchStart",required=false) String start,
+                            @RequestParam(value="searchEnd",required=false) String end,
+                            @RequestParam(value = "searchContent",required = false) String content,
+                            @RequestParam(value = "searchStatus",required = false) Short status) throws ParseException {
         ModelAndView mav = new ModelAndView();
-        List<TasksForm> taskData = taskService.findAll();
+        List<TasksForm> taskData = null;
+
+        // タスク絞り込み処理
+        if (StringUtils.isBlank(start) && StringUtils.isBlank(end) && StringUtils.isBlank(content) && status == null){
+            // 全件取得
+            taskData = taskService.findAll();
+        }else {
+            // 条件取得
+            taskData = taskService.findNarrowDownTask(start, end, content, status);
+
+            // 各条件を再表示させる為にmavに渡す
+            if(!StringUtils.isBlank(start)) {
+                mav.addObject("searchStart", start);
+            }
+            if(!StringUtils.isBlank(end)) {
+                mav.addObject("searchEnd", end);
+            }
+            if(!StringUtils.isBlank(content)){
+                mav.addObject("searchContent", content);
+            }
+            if (status != null){
+                mav.addObject("searchStatus", status);
+            }
+        }
         mav.setViewName("/top");
-        mav.addObject("tasks", taskData);
+        mav.addObject("tasks",taskData);
         mav.addObject("searchStart", start);
         mav.addObject("searchEnd", end);
         return mav;
     }
-
     /* タスク追加画面初期表示 */
     @GetMapping("/ToDo/new")
     public ModelAndView newTask() {
@@ -47,14 +72,12 @@ public class ToDoController {
         taskService.saveTask(taskForm);
         return new ModelAndView("redirect:/ToDo");
     }
-
     /*削除処理*/
     @DeleteMapping("/ToDo/delete/{id}")
     public ModelAndView deleteTask(@PathVariable Integer id) {
         taskService.deleteTask(id);
         return new ModelAndView("redirect:/ToDo");
     }
-
     @PutMapping("/ToDo/updateStatus/{id}")
     public ModelAndView updateStatus(@PathVariable Integer id,
                                      @ModelAttribute("tasks") TasksForm task){
