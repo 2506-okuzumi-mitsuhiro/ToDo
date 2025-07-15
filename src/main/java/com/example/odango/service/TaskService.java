@@ -85,6 +85,32 @@ public class TaskService {
         return tasks;
     }
 
+    /* レコード追加・更新 */
+    public void saveTask(TasksForm reqTask) {
+        Tasks saveTask = setTaskEntity(reqTask);
+        taskRepository.save(saveTask);
+    }
+
+    private Tasks setTaskEntity(TasksForm reqTask) {
+        Tasks task = new Tasks();
+        task.setId(reqTask.getId());
+        task.setContent(reqTask.getContent());
+        task.setStatus(reqTask.getStatus());
+        task.setCreatedDate(reqTask.getCreatedDate());
+        task.setUpdatedDate(reqTask.getUpdatedDate());
+
+        // strLimitDate(String) → limitDate(TimeStamp)
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String str = reqTask.getStrLimitDate();
+            Date date = sdf.parse(str);
+            task.setLimitDate(new Timestamp(date.getTime()));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return task;
+    }
+
     /*削除処理*/
     public void deleteTask(Integer id){
         taskRepository.deleteById(id);

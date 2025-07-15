@@ -1,10 +1,9 @@
 package com.example.odango.repository.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
 
 import java.sql.Timestamp;
 
@@ -14,6 +13,7 @@ import java.sql.Timestamp;
 public class Tasks {
     @Id
     @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column
@@ -22,12 +22,16 @@ public class Tasks {
     @Column
     private short status;
 
-    @Column
+    @Column(name = "limit_date")
     private Timestamp limitDate;
 
-    @Column
+    // limitDateを文字列で取得するために追加
+    @Transient
+    private String strLimitDate;
+
+    @Column(name = "created_date", insertable = false, updatable = false)
     private Timestamp createdDate;
 
-    @Column
+    @Column(name = "updated_date", insertable = false)
     private Timestamp updatedDate;
 }
