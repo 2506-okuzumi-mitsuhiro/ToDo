@@ -6,6 +6,7 @@ import lombok.Setter;
 
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -23,11 +24,7 @@ public class Tasks {
     private short status;
 
     @Column(name = "limit_date")
-    private Timestamp limitDate;
-
-    // limitDateを文字列で取得するために追加
-    @Transient
-    private String strLimitDate;
+    private LocalDate limitDate;
 
     @Column(name = "created_date", insertable = false, updatable = false)
     private Timestamp createdDate;

@@ -18,33 +18,10 @@
             本日の日付 : <span th:text="${#dates.format(#dates.createNow(), 'yyyy年MM月dd日')}"></span>
         </div>
 
-    <a href="/ToDo/new">
-        <button class="new-button" type="button">新規タスク</button>
-    </a>
+        <a href="/ToDo/new">
+            <button class="new-button" type="button">新規タスク</button>
+        </a>
 
-<<<<<<< HEAD
-    <div class="conditions">
-        <form method="get">
-            期限<input type="date" name="searchStart" th:value="${searchStart}"> ～ <input type="date" name="searchEnd" th:value="${searchEnd}">
-            ステータス
-            <select name="searchStatus">
-                <option value="" th:selected="${searchStatus == null}"></option>
-                <option value="1" th:selected="${searchStatus == 1}">未着手</option>
-                <option value="2" th:selected="${searchStatus == 2}">実行中</option>
-                <option value="3" th:selected="${searchStatus == 3}">ステイ中</option>
-                <option value="4" th:selected="${searchStatus == 4}">完了</option>
-            </select>
-            タスク内容<textarea name="searchContent" th:text="${searchContent}"></textarea>
-            <input type="submit" value="絞込"/>
-        </form>
-    </div>
-
-    <div class="tasks">
-        <div class="Columns">
-            <div class="contentColumn">タスク内容</div>
-            <div class="statusColumn">ステータス</div>
-            <div class="limitColumn">タスク期限</div>
-=======
         <div class="conditions">
             <form method="get">
                 期限<input type="date" name="searchStart" th:value="${searchStart}"> ～ <input type="date" name="searchEnd" th:value="${searchEnd}">
@@ -59,7 +36,6 @@
                 タスク内容<textarea name="content" th:text="${searchContent}"></textarea>
                 <input type="submit" value="絞込"/>
             </form>
->>>>>>> 1a8e4c8474d16ca5dad205e0431f517ac249fdb8
         </div>
 
         <div class="tasks">
@@ -69,23 +45,6 @@
                 <div class="limit">タスク期限</div>
             </div>
 
-<<<<<<< HEAD
-            <div class="status">
-                <form th:action="@{/ToDo/updateStatus/{id}(id=${task.id})}" th:method="put">
-                    <select name="status">
-                        <option value="1" th:selected="${task.status == 1}">未着手</option>
-                        <option value="2" th:selected="${task.status == 2}">実行中</option>
-                        <option value="3" th:selected="${task.status == 3}">ステイ中</option>
-                        <option value="4" th:selected="${task.status == 4}">完了</option>
-                    </select>
-                    <input type="hidden" name="content" th:value="${task.content}">
-                    <input type="hidden" name="limitDate" th:value="${task.limitDate}">
-                    <input type="hidden" name="createdDate" th:value="${task.createdDate}">
-                    <input type="hidden" name="updatedDate" th:value="${task.updatedDate}">
-                    <input type="submit" value="変更"/>
-                </form>
-            </div>
-=======
             <div class="tasks-icon" th:each="task : ${tasks}">
                 <div class="content">
                     <span th:text="${task.content}"></span>
@@ -106,7 +65,6 @@
                         <input type="submit" value="変更"/>
                     </form>
                 </div>
->>>>>>> 1a8e4c8474d16ca5dad205e0431f517ac249fdb8
 
                 <div class="limit">
                     <span th:text="${task.limitDate}"></span>

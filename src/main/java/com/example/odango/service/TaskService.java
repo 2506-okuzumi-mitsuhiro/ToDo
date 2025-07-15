@@ -101,19 +101,9 @@ public class TaskService {
         task.setId(reqTask.getId());
         task.setContent(reqTask.getContent());
         task.setStatus(reqTask.getStatus());
+        task.setLimitDate(reqTask.getLimitDate());
         task.setCreatedDate(reqTask.getCreatedDate());
         task.setUpdatedDate(reqTask.getUpdatedDate());
-
-        // strLimitDate(String) → limitDate(TimeStamp)
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String str = reqTask.getStrLimitDate();
-            Date date = sdf.parse(str);
-            task.setLimitDate(new Timestamp(date.getTime()));
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-//        task.setLimitDate(reqTask.getLimitDate());
         return task;
     }
 

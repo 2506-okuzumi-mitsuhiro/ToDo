@@ -2,11 +2,13 @@ package com.example.odango.controller.form;
 
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -19,12 +21,9 @@ public class TasksForm {
 
     private short status;
 
+    @NotNull(message = "期限を設定してください")
     @FutureOrPresent(message = "無効な日付です")
-    private Timestamp limitDate;
-
-    // limitDateを文字列で取得するために追加
-    @NotBlank(message = "期限を設定してください")
-    private String strLimitDate;
+    private LocalDate limitDate;
 
     private Timestamp createdDate;
     private Timestamp updatedDate;
