@@ -20,15 +20,59 @@ public class TaskService {
     @Autowired
     TaskRepository taskRepository;
 
+    /*全件取得処理*/
     public List<TasksForm> findAll(){
         List<Tasks> results = taskRepository.findAllByOrderByLimitDateAsc();
         List<TasksForm> tasks = setTaskForm(results);
         return tasks;
     }
 
-    private List<TasksForm> setTaskForm(List<Tasks> results) {
+    /*条件対象取得処理*/
+    public List<TasksForm> findNarrowDownTask(String start, String end,
+                                              String content, Short status) throws ParseException {
+        Timestamp startDate = null;
+        Timestamp endDate = null;
+        Date dateStart = null;
+        Date dateEnd = null;
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        if (start.isBlank()){
+            dateStart = format.parse("2020-01-01 00:00:00");
+        }else {
+            dateStart = format.parse(start + " 00:00:00");
+        }
+
+        startDate = new Timestamp(dateStart.getTime());
+
+        if (end.isBlank()){
+            dateEnd = format.parse("2100-12-31 23:59:59");
+        }else {
+            dateEnd = format.parse(end + " 23:59:59");
+        }
+
+        endDate = new Timestamp(dateEnd.getTime());
+
+        List<Tasks> results = null;
+
+        if (!content.isBlank() && status != 0) {
+            results = taskRepository.findByLimitDateBetweenAndContentAndStatus(startDate, endDate, content, status);
+        } else if (!content.isBlank()) {
+            results = taskRepository.findByLimitDateBetweenAndStatus(startDate, endDate, content);
+        } else if (status != 0) {
+            results = taskRepository.findByLimitDateBetweenAndContent(startDate, endDate, status);
+        } else {
+            results = taskRepository.findByLimitDateBetween(startDate, endDate);
+        }
+
+        List<TasksForm> tasks = setTaskForm(results);
+        return tasks;
+    }
+
+    /*DB>>Form処理*/
+    private List<TasksForm> setTaskForm(List<Tasks> results){
         List<TasksForm> tasks = new ArrayList<>();
-        for (Tasks result : results) {
+        for(Tasks result : results){
             TasksForm task = new TasksForm();
             task.setId(result.getId());
             task.setContent(result.getContent());
