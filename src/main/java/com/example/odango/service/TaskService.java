@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,9 +25,10 @@ public class TaskService {
         List<TasksForm> tasks = setTaskForm(results);
         return tasks;
     }
-    private List<TasksForm> setTaskForm(List<Tasks> results){
+
+    private List<TasksForm> setTaskForm(List<Tasks> results) {
         List<TasksForm> tasks = new ArrayList<>();
-        for(Tasks result : results){
+        for (Tasks result : results) {
             TasksForm task = new TasksForm();
             task.setId(result.getId());
             task.setContent(result.getContent());
@@ -37,25 +41,41 @@ public class TaskService {
         return tasks;
     }
 
+    /* レコード追加・更新 */
+    public void saveTask(TasksForm reqTask) {
+        Tasks saveTask = setTaskEntity(reqTask);
+        taskRepository.save(saveTask);
+    }
+
+    private Tasks setTaskEntity(TasksForm reqTask) {
+        Tasks task = new Tasks();
+        task.setId(reqTask.getId());
+        task.setContent(reqTask.getContent());
+        task.setStatus(reqTask.getStatus());
+        task.setCreatedDate(reqTask.getCreatedDate());
+        task.setUpdatedDate(reqTask.getUpdatedDate());
+
+        // strLimitDate(String) → limitDate(TimeStamp)
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String str = reqTask.getStrLimitDate();
+            Date date = sdf.parse(str);
+            task.setLimitDate(new Timestamp(date.getTime()));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return task;
+    }
+
     /*削除処理*/
-    public void deleteTask(Integer id){
+    public void deleteTask(Integer id) {
         taskRepository.deleteById(id);
     }
 
     /*ステータスのみ更新*/
     public void updateStatus(TasksForm tasksForm){
         tasksForm.setUpdatedDate(new Timestamp(System.currentTimeMillis()));
-        Tasks tasks = setTask(tasksForm);
+        Tasks tasks = setTaskEntity(tasksForm);
         taskRepository.save(tasks);
-    }
-    private Tasks setTask(TasksForm tasksForm){
-        Tasks tasks =new Tasks();
-        tasks.setId(tasksForm.getId());
-        tasks.setContent(tasksForm.getContent());
-        tasks.setStatus(tasksForm.getStatus());
-        tasks.setLimitDate(tasksForm.getLimitDate());
-        tasks.setCreatedDate(tasksForm.getCreatedDate());
-        tasks.setUpdatedDate(tasksForm.getUpdatedDate());
-        return tasks;
     }
 }
