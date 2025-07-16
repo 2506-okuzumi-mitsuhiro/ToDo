@@ -35,27 +35,26 @@ public class ToDoController {
         ModelAndView mav = new ModelAndView();
         List<TasksForm> taskData = null;
 
-        // タスク絞り込み処理
-        if (StringUtils.isBlank(start) && StringUtils.isBlank(end) && StringUtils.isBlank(content) && status == null){
-            // 全件取得
-            taskData = taskService.findAll();
-        }else {
-            // 条件取得
-            taskData = taskService.findNarrowDownTask(start, end, content, status);
+        // 後続処理用にnull詰め
+        if (content == ""){
+            content = null;
+        }
 
-            // 各条件を再表示させる為にmavに渡す
-            if(!StringUtils.isBlank(start)) {
-                mav.addObject("searchStart", start);
-            }
-            if(!StringUtils.isBlank(end)) {
-                mav.addObject("searchEnd", end);
-            }
-            if(!StringUtils.isBlank(content)){
-                mav.addObject("searchContent", content);
-            }
-            if (status != null){
-                mav.addObject("searchStatus", status);
-            }
+        // タスク情報取得
+        taskData = taskService.findNarrowDownTask(start, end, content, status);
+
+        // 各条件を再表示させる為にmavに渡す
+        if(!StringUtils.isBlank(start)) {
+            mav.addObject("searchStart", start);
+        }
+        if(!StringUtils.isBlank(end)) {
+            mav.addObject("searchEnd", end);
+        }
+        if(!StringUtils.isBlank(content)){
+            mav.addObject("searchContent", content);
+        }
+        if (status != null){
+            mav.addObject("searchStatus", status);
         }
         mav.setViewName("/top");
         mav.addObject("tasks",taskData);
@@ -141,6 +140,7 @@ public class ToDoController {
         taskService.deleteTask(id);
         return new ModelAndView("redirect:/ToDo");
     }
+
     @PutMapping("/ToDo/updateStatus/{id}")
     public ModelAndView updateStatus(@PathVariable Integer id,
                                      @ModelAttribute("tasks") TasksForm task){
@@ -159,3 +159,4 @@ public class ToDoController {
         }
     }
 }
+

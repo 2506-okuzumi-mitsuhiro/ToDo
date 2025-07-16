@@ -18,10 +18,9 @@
             本日の日付 : <span th:text="${#dates.format(#dates.createNow(), 'yyyy年MM月dd日')}"></span>
         </div>
 
-        <a href="/ToDo/new">
-            <button class="new-button" type="button">新規タスク</button>
-        </a>
-
+    <a href="/ToDo/new">
+        <button class="new-button" type="button">新規タスク</button>
+    </a>
         <div class="conditions">
             <form method="get">
                 期限<input type="date" name="searchStart" th:value="${searchStart}"> ～ <input type="date" name="searchEnd" th:value="${searchEnd}">
@@ -44,7 +43,6 @@
                 <div class="status">ステータス</div>
                 <div class="limit">タスク期限</div>
             </div>
-
             <div class="tasks-icon" th:each="task : ${tasks}">
                 <div class="content">
                     <span th:text="${task.content}"></span>
