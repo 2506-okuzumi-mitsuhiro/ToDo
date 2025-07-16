@@ -1,11 +1,9 @@
 package com.example.odango.controller.form;
 
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -18,6 +16,16 @@ public class TasksForm {
     @NotBlank(message = "タスクを入力してください")
     @Size(max = 140, message = "タスクは140文字以内で入力してください")
     private String content;
+
+    // 全角スペースのみが入力された時のバリデーション
+    @AssertTrue(message = "タスクを入力してください")
+    public boolean isValidContent() {
+        if (content.matches("^[　]+$")) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     private short status;
 

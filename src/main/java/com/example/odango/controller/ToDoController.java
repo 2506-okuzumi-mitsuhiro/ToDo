@@ -97,6 +97,14 @@ public class ToDoController {
     /* 編集画面表示 */
     @GetMapping({"/ToDo/edit","/ToDo/edit/","/ToDo/edit/{id}"})
     public ModelAndView editTask(@PathVariable(required = false) String id) {
+        if (this.session.getAttribute("formModel") != null){
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("formModel", this.session.getAttribute("formModel"));
+            setErrorMessage(mav);
+            mav.setViewName("/edit");
+            return mav;
+        }
+
         TasksForm task = null;
 
         if (hasText(id) && (id.matches("^[0-9]+$"))) {
@@ -125,6 +133,8 @@ public class ToDoController {
                 messages.add(error.getDefaultMessage());
             }
             session.setAttribute("errorMessages", messages);
+            session.setAttribute("formModel", taskForm);
+
             return new ModelAndView("redirect:/ToDo/edit/{id}");
         }
         taskForm.setId(id);
