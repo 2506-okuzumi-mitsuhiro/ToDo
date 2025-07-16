@@ -21,7 +21,7 @@ import java.util.List;
 public class TaskService {
     @Autowired
     TaskRepository taskRepository;
-    
+
     @Autowired
     TaskMapper taskMapper;
 
@@ -100,7 +100,7 @@ public class TaskService {
 
     /* レコード追加・更新 */
     public void saveTask(TasksForm reqTask) {
-        Tasks saveTask = setTaskEntity(reqTask);
+        Tasks saveTask = setTask(reqTask);
 
         if(saveTask.getId() == 0){
             taskMapper.insert(saveTask);
@@ -108,17 +108,6 @@ public class TaskService {
             taskMapper.update(saveTask);
         }
 //        taskRepository.save(saveTask);
-    }
-
-    private Tasks setTaskEntity(TasksForm reqTask) {
-        Tasks task = new Tasks();
-        task.setId(reqTask.getId());
-        task.setContent(reqTask.getContent());
-        task.setStatus(reqTask.getStatus());
-        task.setLimitDate(reqTask.getLimitDate());
-        task.setCreatedDate(reqTask.getCreatedDate());
-        task.setUpdatedDate(reqTask.getUpdatedDate());
-        return task;
     }
 
     /*削除処理*/

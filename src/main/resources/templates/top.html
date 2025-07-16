@@ -67,7 +67,7 @@
                     </form>
                 </div>
 
-                <div class="limit">
+                <div class="limit" th:data-limit="${task.limitDate}">
                     <span th:text="${task.limitDate}"></span>
                 </div>
 
@@ -83,6 +83,7 @@
                     </form>
                 </div>
             </div>
+            <script th:src="@{/js/script.js}"></script>
         </div>
     </div>
 </body>
