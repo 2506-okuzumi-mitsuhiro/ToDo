@@ -12,9 +12,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.util.StringUtils.hasText;
 
 @Controller
 public class ToDoController {
@@ -57,6 +60,8 @@ public class ToDoController {
         mav.addObject("tasks",taskData);
         mav.addObject("searchStart", start);
         mav.addObject("searchEnd", end);
+        // エラーメッセージ表示のため追記
+        setErrorMessage(mav);
         return mav;
     }
     /* タスク追加画面初期表示 */
@@ -85,6 +90,46 @@ public class ToDoController {
 
         // ステータス:未着手で登録
         taskForm.setStatus((short) 1);
+        taskService.saveTask(taskForm);
+        return new ModelAndView("redirect:/ToDo");
+    }
+
+    /* 編集画面表示 */
+    @GetMapping({"/ToDo/edit","/ToDo/edit/","/ToDo/edit/{id}"})
+    public ModelAndView editTask(@PathVariable(required = false) String id) {
+        TasksForm task = null;
+
+        if (hasText(id) && (id.matches("^[0-9]+$"))) {
+            Integer taskId = Integer.valueOf(id);
+            task = taskService.editTask(taskId);
+        }
+
+        if (task == null) {
+            session.setAttribute("errorMessages", "不正なパラメータです");
+            return new ModelAndView("redirect:/ToDo");
+        }
+
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("formModel", task);
+        setErrorMessage(mav);
+        mav.setViewName("/edit");
+        return mav;
+    }
+
+    /* 編集処理 */
+    @PutMapping("/ToDo/update/{id}")
+    public ModelAndView updateTask(@PathVariable Integer id, @Validated @ModelAttribute("formModel") TasksForm taskForm, BindingResult result) {
+        if (result.hasErrors()) {
+            List<String> messages = new ArrayList<>();
+            for (FieldError error : result.getFieldErrors()) {
+                messages.add(error.getDefaultMessage());
+            }
+            session.setAttribute("errorMessages", messages);
+            return new ModelAndView("redirect:/ToDo/edit/{id}");
+        }
+        taskForm.setId(id);
+        Timestamp updatedDate = new Timestamp(System.currentTimeMillis());
+        taskForm.setUpdatedDate(updatedDate);
         taskService.saveTask(taskForm);
         return new ModelAndView("redirect:/ToDo");
     }
