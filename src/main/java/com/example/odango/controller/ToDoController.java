@@ -30,7 +30,7 @@ public class ToDoController {
     @GetMapping("/ToDo")
     public ModelAndView top(@RequestParam(value="searchStart",required=false) String start,
                             @RequestParam(value="searchEnd",required=false) String end,
-                            @RequestParam(value = "searchContent",required = false) String content,
+                            @RequestParam(value = "content",required = false) String content,
                             @RequestParam(value = "searchStatus",required = false) Short status) throws ParseException {
         ModelAndView mav = new ModelAndView();
         List<TasksForm> taskData = null;
