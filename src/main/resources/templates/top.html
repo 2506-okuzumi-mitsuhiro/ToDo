@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="styleSheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script th:src="@{/js/delete.js}"></script>
+    <script th:src="@{/js/change.js}"></script>
     <title>Top</title>
 </head>
 <body>
@@ -60,7 +63,7 @@
                         <input type="hidden" name="limitDate" th:value="${task.limitDate}">
                         <input type="hidden" name="createdDate" th:value="${task.createdDate}">
                         <input type="hidden" name="updatedDate" th:value="${task.updatedDate}">
-                        <input type="submit" value="変更"/>
+                        <input class="change" type="submit" value="変更"/>
                     </form>
                 </div>
 
@@ -76,7 +79,7 @@
 
                 <div class="delete-button">
                     <form th:action="@{/ToDo/delete/{id}(id=${task.id})}" th:method="delete">
-                        <input type="submit" value="削除"/>
+                        <input class="delete" type="submit" value="削除"/>
                     </form>
                 </div>
             </div>
