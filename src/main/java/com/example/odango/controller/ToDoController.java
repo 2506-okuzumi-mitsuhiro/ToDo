@@ -69,6 +69,11 @@ public class ToDoController {
     public ModelAndView newTask() {
         ModelAndView mav = new ModelAndView();
         TasksForm taskForm = new TasksForm();
+
+        if (this.session.getAttribute("formModel") != null){
+            taskForm = (TasksForm) this.session.getAttribute("formModel");
+        }
+
         mav.setViewName("/new");
         mav.addObject("formModel", taskForm);
         setErrorMessage(mav);
@@ -85,6 +90,7 @@ public class ToDoController {
                 messages.add(error.getDefaultMessage());
             }
             session.setAttribute("errorMessages", messages);
+            session.setAttribute("formModel", taskForm);
             return new ModelAndView("redirect:/ToDo/new");
         }
 
