@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="styleSheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script th:src="@{/js/delete.js}"></script>
+    <script th:src="@{/js/change.js}"></script>
     <title>Top</title>
 </head>
 <body>
@@ -18,10 +21,9 @@
             本日の日付 : <span th:text="${#dates.format(#dates.createNow(), 'yyyy年MM月dd日')}"></span>
         </div>
 
-        <a href="/ToDo/new">
-            <button class="new-button" type="button">新規タスク</button>
-        </a>
-
+    <a href="/ToDo/new">
+        <button class="new-button" type="button">新規タスク</button>
+    </a>
         <div class="conditions">
             <form method="get">
                 期限<input type="date" name="searchStart" th:value="${searchStart}"> ～ <input type="date" name="searchEnd" th:value="${searchEnd}">
@@ -44,7 +46,6 @@
                 <div class="status">ステータス</div>
                 <div class="limit">タスク期限</div>
             </div>
-
             <div class="tasks-icon" th:each="task : ${tasks}">
                 <div class="content">
                     <span th:text="${task.content}"></span>
@@ -62,7 +63,7 @@
                         <input type="hidden" name="limitDate" th:value="${task.limitDate}">
                         <input type="hidden" name="createdDate" th:value="${task.createdDate}">
                         <input type="hidden" name="updatedDate" th:value="${task.updatedDate}">
-                        <input type="submit" value="変更"/>
+                        <input class="change" type="submit" value="変更"/>
                     </form>
                 </div>
 
@@ -71,14 +72,14 @@
                 </div>
 
                 <div class="edit-button">
-                    <form th:action="@{/edit/{id}(id=${task.id})}" >
+                    <form th:action="@{/ToDo/edit/{id}(id=${task.id})}" >
                         <input type="submit" value="編集"/>
                     </form>
                 </div>
 
                 <div class="delete-button">
                     <form th:action="@{/ToDo/delete/{id}(id=${task.id})}" th:method="delete">
-                        <input type="submit" value="削除"/>
+                        <input class="delete" type="submit" value="削除"/>
                     </form>
                 </div>
             </div>

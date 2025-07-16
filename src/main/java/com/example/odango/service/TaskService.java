@@ -1,6 +1,7 @@
 package com.example.odango.service;
 
 import com.example.odango.controller.form.TasksForm;
+import com.example.odango.mapper.TaskMapper;
 import com.example.odango.repository.TaskRepository;
 import com.example.odango.repository.entity.Tasks;
 import io.micrometer.common.util.StringUtils;
@@ -21,14 +22,10 @@ public class TaskService {
     @Autowired
     TaskRepository taskRepository;
 
-    /*全件取得処理*/
-    public List<TasksForm> findAll(){
-        List<Tasks> results = taskRepository.findAllByOrderByLimitDateAsc();
-        List<TasksForm> tasks = setTaskForm(results);
-        return tasks;
-    }
+    @Autowired
+    TaskMapper taskMapper;
 
-    /*条件対象取得処理*/
+    /*レコード取得処理*/
     public List<TasksForm> findNarrowDownTask(String start, String end,
                                               String content, Short status) throws ParseException {
         Timestamp startDate = null;
@@ -56,15 +53,16 @@ public class TaskService {
 
         List<Tasks> results = null;
 
-        if (!StringUtils.isBlank(content) && status != null) {
-            results = taskRepository.findByLimitDateBetweenAndContentAndStatusOrderByLimitDateAsc(startDate, endDate, content, status);
-        } else if (!StringUtils.isBlank(content)) {
-            results = taskRepository.findByLimitDateBetweenAndContentOrderByLimitDateAsc(startDate, endDate, content);
-        } else if (status != null) {
-            results = taskRepository.findByLimitDateBetweenAndStatusOrderByLimitDateAsc(startDate, endDate, status);
-        } else {
-            results = taskRepository.findByLimitDateBetweenOrderByLimitDateAsc(startDate, endDate);
-        }
+//        if (!StringUtils.isBlank(content) && status != null) {
+//            results = taskRepository.findByLimitDateBetweenAndContentAndStatusOrderByLimitDateAsc(startDate, endDate, content, status);
+//        } else if (!StringUtils.isBlank(content)) {
+//            results = taskRepository.findByLimitDateBetweenAndContentOrderByLimitDateAsc(startDate, endDate, content);
+//        } else if (status != null) {
+//            results = taskRepository.findByLimitDateBetweenAndStatusOrderByLimitDateAsc(startDate, endDate, status);
+//        } else {
+//            results = taskMapper.selectAll(startDate, endDate);
+//        }
+        results = taskMapper.select(startDate, endDate, content, status);
 
         List<TasksForm> tasks = setTaskForm(results);
         return tasks;
@@ -86,22 +84,44 @@ public class TaskService {
         return tasks;
     }
 
+    /* レコード1件取得 */
+    public TasksForm editTask(Integer id) {
+        List<Tasks> results = new ArrayList<>();
+        results.add((Tasks) taskRepository.findById(id).orElse(null));
+        List<TasksForm> task = new ArrayList<>();
+        // 入力したIDが存在しなければnullで返す
+        if (results.get(0) == null) {
+            task.add(null);
+        } else {
+            task = setTaskForm(results);
+        }
+        return task.get(0);
+    }
+
     /* レコード追加・更新 */
     public void saveTask(TasksForm reqTask) {
         Tasks saveTask = setTask(reqTask);
-        taskRepository.save(saveTask);
+
+        if(saveTask.getId() == 0){
+            taskMapper.insert(saveTask);
+        }else {
+            taskMapper.update(saveTask);
+        }
+//        taskRepository.save(saveTask);
     }
 
     /*削除処理*/
     public void deleteTask(Integer id) {
-        taskRepository.deleteById(id);
+//        taskRepository.deleteById(id);
+        taskMapper.delete(id);
     }
 
     /*ステータスのみ更新*/
     public void updateStatus(TasksForm tasksForm){
         tasksForm.setUpdatedDate(new Timestamp(System.currentTimeMillis()));
         Tasks tasks = setTask(tasksForm);
-        taskRepository.save(tasks);
+//        taskRepository.save(tasks);
+        taskMapper.update(tasks);
     }
     private Tasks setTask(TasksForm reqTask) {
         Tasks task = new Tasks();
