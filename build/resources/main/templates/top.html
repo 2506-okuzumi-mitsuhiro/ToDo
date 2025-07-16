@@ -48,7 +48,7 @@
             </div>
             <div class="tasks-icon" th:each="task : ${tasks}">
                 <div class="content">
-                    <span th:text="${task.content}"></span>
+                    <pre><span th:text="${task.content}"></span></pre>
                 </div>
 
                 <div class="status">
