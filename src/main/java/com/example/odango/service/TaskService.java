@@ -86,6 +86,20 @@ public class TaskService {
         return tasks;
     }
 
+    /* レコード1件取得 */
+    public TasksForm editTask(Integer id) {
+        List<Tasks> results = new ArrayList<>();
+        results.add((Tasks) taskRepository.findById(id).orElse(null));
+        List<TasksForm> task = new ArrayList<>();
+        // 入力したIDが存在しなければnullで返す
+        if (results.get(0) == null) {
+            task.add(null);
+        } else {
+            task = setTaskForm(results);
+        }
+        return task.get(0);
+    }
+
     /* レコード追加・更新 */
     public void saveTask(TasksForm reqTask) {
         Tasks saveTask = setTaskEntity(reqTask);
