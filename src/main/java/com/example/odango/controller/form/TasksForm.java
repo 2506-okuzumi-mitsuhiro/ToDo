@@ -3,10 +3,9 @@ package com.example.odango.controller.form;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -31,7 +30,7 @@ public class TasksForm {
 
     @NotNull(message = "期限を設定してください")
     @FutureOrPresent(message = "無効な日付です")
-    private LocalDate limitDate;
+    private LocalDateTime limitDate;
 
     private Timestamp createdDate;
     private Timestamp updatedDate;

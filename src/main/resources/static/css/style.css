@@ -72,6 +72,11 @@ button {
     font-weight:bold;
 }
 
+pre {
+  white-space: pre-wrap;
+  word-break:break-all;
+}
+
 .errorMessages {
     color: red;
 }

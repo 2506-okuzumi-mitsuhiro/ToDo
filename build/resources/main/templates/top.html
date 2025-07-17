@@ -68,7 +68,7 @@
                 </div>
 
                 <div class="limit" th:data-limit="${task.limitDate}">
-                    <span th:text="${task.limitDate}"></span>
+                    <span th:text="*{#temporals.format(task.limitDate, 'yyyy/MM/dd HH:mm:ss')}"></span>
                 </div>
 
                 <div class="edit-button">

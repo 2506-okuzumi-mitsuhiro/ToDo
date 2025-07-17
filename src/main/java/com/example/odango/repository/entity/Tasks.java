@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -24,7 +25,7 @@ public class Tasks {
     private short status;
 
     @Column(name = "limit_date")
-    private LocalDate limitDate;
+    private LocalDateTime limitDate;
 
     @Column(name = "created_date", insertable = false, updatable = false)
     private Timestamp createdDate;
