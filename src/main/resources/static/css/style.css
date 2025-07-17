@@ -28,6 +28,11 @@ button {
 	margin-bottom: 5px;
 }
 
+save-button{
+    margin-top:100px;
+    margin-bottom:100px;
+}
+
 .tasks{
     background-color: white;
 }
@@ -74,4 +79,19 @@ button {
 
 .errorMessages {
     color: red;
+}
+
+.conditions .content-box{
+    height:15px;
+    width:200px;
+    margin-bottom:-5px;
+}
+
+.conditions{
+    margin-top:3px;
+    margin-bottom:3px;
+}
+
+.conditions .select-status{
+    height:21px;
 }

@@ -17,12 +17,12 @@
 
     <form th:action="@{/ToDo/update/{id}(id=${formModel.id})}" th:method="put" th:object="${formModel}">
         <div class="form-area">
-            <label>タスク内容</label></br>
+            <label>タスク内容</label><br/>
             <textarea class="content-box" th:field="*{content}" size="20" maxlength="200"/></textarea><br/>
 
-            <label>タスク期限</label></br>
+            <label>タスク期限</label><br/>
             <input th:type="date" th:name="limitDate" th:value="*{limitDate}"/>
-            <input type="hidden" name="status" th:value="*{status}">
+            <input type="hidden" name="status" th:value="*{status}"><br/>
             <input type="submit" value="編集"/>
         </div>
     </form>
