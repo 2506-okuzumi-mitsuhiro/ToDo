@@ -18,7 +18,7 @@
         </div>
 
         <div class="today">
-            本日の日付 : <span th:text="${#dates.format(#dates.createNow(), 'yyyy年MM月dd日')}"></span>
+            現在の日時 : <span id="current-time"></span></h1>
         </div>
 
     <a href="/ToDo/new">
@@ -68,7 +68,7 @@
                 </div>
 
                 <div class="limit" th:data-limit="${task.limitDate}">
-                    <span th:text="*{#temporals.format(task.limitDate, 'yyyy/MM/dd HH:mm:ss')}"></span>
+                    <span th:text="*{#temporals.format(task.limitDate, 'yyyy年MM月dd日 HH時mm分')}"></span>
                 </div>
 
                 <div class="edit-button">

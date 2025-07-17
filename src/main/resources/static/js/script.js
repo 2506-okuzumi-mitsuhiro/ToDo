@@ -21,3 +21,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+/*リアルタイムの時刻を表示*/
+function updateCurrentTime() {
+    const now = new Date();
+    const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false // 24時間形式を使用
+    };
+    const formattedTime = now.toLocaleDateString('ja-JP', options).replace(':', '時') + '分';
+    document.getElementById('current-time').textContent = formattedTime;
+}
+
+updateCurrentTime();
+
+setInterval(updateCurrentTime, 1000);
