@@ -24,6 +24,11 @@
         ORDER BY limit_date ASC
     </select>
 
+    <select id="selectById" resultMap="SelectResult" parameterType="Integer">
+        SELECT * FROM tasks
+        WHERE id = #{id}
+    </select>
+
     <insert id="insert" parameterType="com.example.odango.repository.entity.Tasks">
         INSERT INTO tasks(content, status, limit_date)
         VALUES(#{content}, #{status}, #{limitDate})
