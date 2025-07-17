@@ -28,14 +28,14 @@
             <form method="get">
                 期限<input type="date" name="searchStart" th:value="${searchStart}"> ～ <input type="date" name="searchEnd" th:value="${searchEnd}">
                 ステータス
-                <select name="searchStatus">
+                <select name="searchStatus" class="select-status">
                     <option value="" th:selected="${searchStatus == null}"></option>
                     <option value="1" th:selected="${searchStatus == 1}">未着手</option>
                     <option value="2" th:selected="${searchStatus == 2}">実行中</option>
                     <option value="3" th:selected="${searchStatus == 3}">ステイ中</option>
                     <option value="4" th:selected="${searchStatus == 4}">完了</option>
                 </select>
-                タスク内容<textarea name="content" th:text="${searchContent}"></textarea>
+                タスク内容<textarea name="content" th:text="${searchContent}" class="content-box"></textarea>
                 <input type="submit" value="絞込"/>
             </form>
         </div>
