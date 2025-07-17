@@ -64,12 +64,14 @@ public class ToDoController {
         setErrorMessage(mav);
         return mav;
     }
+
     /* タスク追加画面初期表示 */
     @GetMapping("/ToDo/new")
     public ModelAndView newTask() {
         ModelAndView mav = new ModelAndView();
         TasksForm taskForm = new TasksForm();
 
+        // 追加画面エラーで戻す場合は入力内容を返す
         if (this.session.getAttribute("formModel") != null){
             taskForm = (TasksForm) this.session.getAttribute("formModel");
         }
@@ -103,6 +105,7 @@ public class ToDoController {
     /* 編集画面表示 */
     @GetMapping({"/ToDo/edit","/ToDo/edit/","/ToDo/edit/{id}"})
     public ModelAndView editTask(@PathVariable(required = false) String id) {
+        // 編集画面エラーで戻す場合は入力内容を返す
         if (this.session.getAttribute("formModel") != null){
             ModelAndView mav = new ModelAndView();
             mav.addObject("formModel", this.session.getAttribute("formModel"));
