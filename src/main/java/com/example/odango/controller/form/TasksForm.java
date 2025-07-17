@@ -3,7 +3,6 @@ package com.example.odango.controller.form;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;

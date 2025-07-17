@@ -53,15 +53,6 @@ public class TaskService {
 
         List<Tasks> results = null;
 
-//        if (!StringUtils.isBlank(content) && status != null) {
-//            results = taskRepository.findByLimitDateBetweenAndContentAndStatusOrderByLimitDateAsc(startDate, endDate, content, status);
-//        } else if (!StringUtils.isBlank(content)) {
-//            results = taskRepository.findByLimitDateBetweenAndContentOrderByLimitDateAsc(startDate, endDate, content);
-//        } else if (status != null) {
-//            results = taskRepository.findByLimitDateBetweenAndStatusOrderByLimitDateAsc(startDate, endDate, status);
-//        } else {
-//            results = taskMapper.selectAll(startDate, endDate);
-//        }
         results = taskMapper.select(startDate, endDate, content, status);
 
         List<TasksForm> tasks = setTaskForm(results);
@@ -87,7 +78,7 @@ public class TaskService {
     /* レコード1件取得 */
     public TasksForm editTask(Integer id) {
         List<Tasks> results = new ArrayList<>();
-        results.add((Tasks) taskRepository.findById(id).orElse(null));
+        results.add((Tasks) taskMapper.selectById(id));
         List<TasksForm> task = new ArrayList<>();
         // 入力したIDが存在しなければnullで返す
         if (results.get(0) == null) {
@@ -107,12 +98,10 @@ public class TaskService {
         }else {
             taskMapper.update(saveTask);
         }
-//        taskRepository.save(saveTask);
     }
 
     /*削除処理*/
     public void deleteTask(Integer id) {
-//        taskRepository.deleteById(id);
         taskMapper.delete(id);
     }
 
@@ -120,7 +109,6 @@ public class TaskService {
     public void updateStatus(TasksForm tasksForm){
         tasksForm.setUpdatedDate(new Timestamp(System.currentTimeMillis()));
         Tasks tasks = setTask(tasksForm);
-//        taskRepository.save(tasks);
         taskMapper.update(tasks);
     }
     private Tasks setTask(TasksForm reqTask) {
